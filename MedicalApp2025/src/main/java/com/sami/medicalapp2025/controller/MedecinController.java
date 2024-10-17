@@ -5,6 +5,7 @@ import com.sami.medicalapp2025.service.IServiceMedecin;
 import com.sami.medicalapp2025.service.IServicePatient;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class MedecinController {
         }
     }
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Medecin>addMedecin(@RequestBody Medecin d){
         Medecin dr = iServiceMedecin.createMedecin(d);
         return ResponseEntity.ok(dr);

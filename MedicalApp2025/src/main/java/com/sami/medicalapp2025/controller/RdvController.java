@@ -6,6 +6,7 @@ import com.sami.medicalapp2025.service.IServiceRdv;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class RdvController {
         }
     }
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object>addRdv(@RequestBody Rdv d){
         Rdv dr = iServiceRdv.createRdv(d);
         if(dr!= null)
