@@ -4,10 +4,13 @@ import com.sami.medicalapp2025.entities.Medecin;
 import com.sami.medicalapp2025.entities.Rdv;
 import com.sami.medicalapp2025.service.IServiceRdv;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/rdv")
@@ -25,9 +28,14 @@ public class RdvController {
         }
     }
     @PostMapping("/add")
-    public ResponseEntity<Rdv>addRdv(@RequestBody Rdv d){
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Object>addRdv(@RequestBody Rdv d){
         Rdv dr = iServiceRdv.createRdv(d);
-        return ResponseEntity.ok(dr);
+        if(dr!= null)
+            return new ResponseEntity<>(dr, HttpStatus.CREATED);
+        else
+            return new ResponseEntity<>("le rdv est deja reserver ",HttpStatus.CONFLICT);
+
     }
     @PutMapping("/update")
     public ResponseEntity<Rdv>updateRdv(@RequestBody Rdv d){

@@ -15,7 +15,12 @@ public class ServiceRdv implements IServiceRdv{
 
     @Override
     public Rdv createRdv(Rdv p) {
-        return  rdvRepository.save(p);
+        Rdv rdv1=rdvRepository.findByMedecinIdAndDateRdv(p.getMedecin().getId(),p.getDateRdv());
+        Rdv rdv2=rdvRepository.findByPatientIdAndDateRdv(p.getPatient().getId(),p.getDateRdv());
+        if(rdv1==null && rdv2==null)
+            return rdvRepository.save(p);
+        else
+        return null;
     }
 
     @Override
